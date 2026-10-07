@@ -1,22 +1,15 @@
 spring:
   application:
-    name: Persistencia
+    name: lab1
 
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: postgres
-  flyway:
-    url: ${spring.datasource.url}
-    user: ${spring.datasource.username}
-    password: ${spring.datasource.password}
   jpa:
     hibernate:
       ddl-auto: validate
 
-  ai:
-    openai:
-      api-key: ${OPENAI_API_KEY}
 
   # La API valida los JWT emitidos por este realm de Keycloak.
   # Spring descarga las llaves públicas desde <issuer-uri>/.well-known/openid-configuration

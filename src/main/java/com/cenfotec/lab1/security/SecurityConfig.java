@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
  *
  * - La API es un "Resource Server": NO maneja usuarios ni contraseñas.
  *   Solo recibe un token JWT (emitido por Keycloak) y lo valida.
- * - @EnableMethodSecurity habilita @PreAuthorize / @Secured en los controllers.
+ * - @EnableMethodSecurity habilita @PreAuthorize / securedEnabled = true habilita además @Secured.
  */
 @Configuration
 @EnableWebSecurity
@@ -31,7 +31,7 @@ public class SecurityConfig {
 
                 // 1) Reglas por URL (gruesas). El detalle fino va en anotaciones de los controllers.
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login", "/api/v1/demo/publico", "/actuator/health", "/error").permitAll()
+                        .requestMatchers("/api/v1/auth/login", "/actuator/health", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
 
