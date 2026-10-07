@@ -1,8 +1,8 @@
-package com.ginomarin.persistencia.controllers;
+package com.cenfotec.lab1.controllers;
 
-import com.ginomarin.persistencia.dto.LoginRequestDTO;
-import com.ginomarin.persistencia.dto.LoginResponseDTO;
-import com.ginomarin.persistencia.service.AuthService;
+import com.cenfotec.lab1.dto.LoginRequestDTO;
+import com.cenfotec.lab1.dto.LoginResponseDTO;
+import com.cenfotec.lab1.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

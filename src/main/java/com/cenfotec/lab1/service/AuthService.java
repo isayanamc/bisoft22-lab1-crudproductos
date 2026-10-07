@@ -1,7 +1,7 @@
-package com.ginomarin.persistencia.service;
+package com.cenfotec.lab1.service;
 
-import com.ginomarin.persistencia.dto.LoginRequestDTO;
-import com.ginomarin.persistencia.dto.LoginResponseDTO;
+import com.cenfotec.lab1.dto.LoginRequestDTO;
+import com.cenfotec.lab1.dto.LoginResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

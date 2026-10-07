@@ -1,4 +1,4 @@
-package com.ginomarin.persistencia.security;
+package com.cenfotec.lab1.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

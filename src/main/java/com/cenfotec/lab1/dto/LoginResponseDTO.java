@@ -1,4 +1,4 @@
-package com.ginomarin.persistencia.dto;
+package com.cenfotec.lab1.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
