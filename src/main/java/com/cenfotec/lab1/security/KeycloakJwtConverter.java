@@ -13,17 +13,17 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Traduce el JWT de Keycloak a un Authentication de Spring Security.
- *
  * Keycloak pone la información así dentro del token:
- * <pre>
- * "realm_access":    { "roles": ["ADMIN"] }                          -> ROLES
- * "resource_access": { "persistencia-api": { "roles": ["perro:leer"] } } -> PERMISOS
- * </pre>
+ * "realm_access":    { "roles": ["SUPER-ADMIN-ROLE", ...] }                         -> ROLES
+ * "resource_access": { "inventario-api": { "roles": ["producto:leer", ...] } }      -> PERMISOS
+ *
+ * Los permisos no se asignan directo al usuario: viven dentro de un rol compuesto
+ * (SUPER-ADMIN-ROLE o USER) y Keycloak los expande al emitir el token. Por eso en la
+ * base de Keycloak cada usuario tiene un solo rol, pero el token trae todos sus permisos.
  *
  * Spring no conoce ese formato, así que lo convertimos:
- * - Rol de realm "ADMIN"            -> authority "ROLE_ADMIN"  (se usa con hasRole('ADMIN'))
- * - Rol de cliente "perro:leer"     -> authority "perro:leer"  (se usa con hasAuthority('perro:leer'))
+ * - Rol de realm "SUPER-ADMIN-ROLE"   -> authority "ROLE_SUPER-ADMIN-ROLE" (se usa con hasRole('SUPER-ADMIN-ROLE')))
+ * - Rol de cliente "categoria:leer"   -> authority "categoria:leer"         (se usa con hasAuthority('categoria:leer'))
  */
 public class KeycloakJwtConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
