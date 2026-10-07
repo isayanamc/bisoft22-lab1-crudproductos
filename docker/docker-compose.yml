@@ -1,18 +1,20 @@
 services:
-  postgres:
-    image: postgres:16-alpine3.23
-    container_name: postgres_db
+  #Base de datos de la app
+  mariadb:
+    image: mariadb:11.4
+    container_name: lab1_mariadb
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: lab1
+      MARIADB_USER: lab1
+      MARIADB_PASSWORD: lab1
     ports:
-      - "5432:5432"
+      - "3307:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data2
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
 
-  # Servidor de identidad (Auth broker). Emite los tokens JWT que la API valida.
-  # Consola de administración: http://localhost:8180  (admin / admin)
   keycloak:
     image: quay.io/keycloak/keycloak:26.4
     container_name: keycloak
@@ -31,5 +33,4 @@ services:
       - ./keycloak/start.sh:/opt/keycloak/start.sh:ro
 
 volumes:
-  postgres_data:
-  redis_data:
+  mariadb_data:
