@@ -1,5 +1,5 @@
 #!/bin/bash
-# Arranca Keycloak en modo desarrollo e importa el realm "veterinaria".
+# Arranca Keycloak en modo desarrollo e importa el realm "inventario".
 # Luego desactiva el requisito de HTTPS en el realm "master" (el de la consola de admin),
 # porque Keycloak considera "externas" las peticiones que llegan desde fuera del contenedor.
 # SOLO PARA DESARROLLO LOCAL.

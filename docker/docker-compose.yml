@@ -37,7 +37,7 @@ services:
     ports:
       - "8180:8080"
     volumes:
-      - ./keycloak/realm-veterinaria.json:/opt/keycloak/data/import/realm-veterinaria.json:ro
+      - ./keycloak/realm-inventario.json:/opt/keycloak/data/import/realm-inventario.json:ro
       - ./keycloak/start.sh:/opt/keycloak/start.sh:ro
     depends_on:
       mariadb:

@@ -1,0 +1,78 @@
+{
+  "realm": "inventario",
+  "enabled": true,
+  "sslRequired": "none",
+  "accessTokenLifespan": 900,
+  "roles": {
+    "realm": [
+      {
+        "name": "SUPER-ADMIN-ROLE",
+        "description": "Puede consultar, crear, editar y borrar productos y categorías",
+        "composite": true,
+        "composites": {
+          "client": {
+            "inventario-api": [
+              "producto:leer", "producto:escribir", "producto:eliminar",
+              "categoria:leer", "categoria:escribir", "categoria:eliminar"
+            ]
+          }
+        }
+      },
+      {
+        "name": "USER",
+        "description": "Solo puede consultar productos y categorías",
+        "composite": true,
+        "composites": {
+          "client": {
+            "inventario-api": ["producto:leer", "categoria:leer"]
+          }
+        }
+      }
+    ],
+    "client": {
+      "inventario-api": [
+        { "name": "producto:leer", "description": "Consultar productos" },
+        { "name": "producto:escribir", "description": "Crear y actualizar productos" },
+        { "name": "producto:eliminar", "description": "Eliminar productos" },
+        { "name": "categoria:leer", "description": "Consultar categorías" },
+        { "name": "categoria:escribir", "description": "Crear y actualizar categorías" },
+        { "name": "categoria:eliminar", "description": "Eliminar categorías" }
+      ]
+    }
+  },
+  "clients": [
+    {
+      "clientId": "inventario-api",
+      "name": "API de Inventario (Spring Boot)",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "redirectUris": ["http://localhost:*", "https://oauth.pstmn.io/v1/callback"],
+      "webOrigins": ["+"],
+      "fullScopeAllowed": true
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "enabled": true,
+      "email": "admin@inventario.local",
+      "emailVerified": true,
+      "firstName": "Isayana",
+      "lastName": "Administradora",
+      "credentials": [{ "type": "password", "value": "admin123", "temporary": false }],
+      "realmRoles": ["SUPER-ADMIN-ROLE"]
+    },
+    {
+      "username": "usuario",
+      "enabled": true,
+      "email": "usuario@inventario.local",
+      "emailVerified": true,
+      "firstName": "Usuario",
+      "lastName": "Consulta",
+      "credentials": [{ "type": "password", "value": "usuario123", "temporary": false }],
+      "realmRoles": ["USER"]
+    }
+  ]
+}

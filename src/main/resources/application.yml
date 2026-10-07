@@ -17,10 +17,10 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8180/realms/veterinaria
+          issuer-uri: http://localhost:8180/realms/inventario
 
 # Cliente de Keycloak donde viven los permisos (client roles)
 keycloak:
-  client-id: persistencia-api
+  client-id: inventario-api
   # Endpoint de Keycloak que emite tokens (lo usa POST /api/v1/auth/login)
   token-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
