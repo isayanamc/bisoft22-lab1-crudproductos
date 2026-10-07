@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: Persistencia
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+
+  # La API valida los JWT emitidos por este realm de Keycloak.
+  # Spring descarga las llaves públicas desde <issuer-uri>/.well-known/openid-configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/veterinaria
+
+# Cliente de Keycloak donde viven los permisos (client roles)
+keycloak:
+  client-id: persistencia-api
+  # Endpoint de Keycloak que emite tokens (lo usa POST /api/v1/auth/login)
+  token-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token

@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16-alpine3.23
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data2
+
+  # Servidor de identidad (Auth broker). Emite los tokens JWT que la API valida.
+  # Consola de administración: http://localhost:8180  (admin / admin)
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4
+    container_name: keycloak
+    # start.sh ejecuta "kc.sh start-dev --import-realm":
+    #   start-dev: modo desarrollo (HTTP, sin cache de temas, BD embebida)
+    #   --import-realm: importa los realms en /opt/keycloak/data/import al arrancar
+    # y además permite HTTP en el realm master para poder entrar a la consola.
+    entrypoint: ["/bin/bash", "/opt/keycloak/start.sh"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8180:8080"
+    volumes:
+      - ./keycloak/realm-veterinaria.json:/opt/keycloak/data/import/realm-veterinaria.json:ro
+      - ./keycloak/start.sh:/opt/keycloak/start.sh:ro
+
+volumes:
+  postgres_data:
+  redis_data:
