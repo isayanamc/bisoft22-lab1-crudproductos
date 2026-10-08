@@ -24,3 +24,8 @@ keycloak:
   client-id: inventario-api
   # Endpoint de Keycloak que emite tokens (lo usa POST /api/v1/auth/login)
   token-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
+
+#Frontend que pueden llamar a la API desde el navegador (CORS)
+app:
+  cors:
+    allowed-origins: http://localhost:4200
