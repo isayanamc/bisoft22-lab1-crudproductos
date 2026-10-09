@@ -3,7 +3,6 @@ package com.cenfotec.lab1.mappers;
 
 import com.cenfotec.lab1.dto.CategoriaDTO;
 import com.cenfotec.lab1.model.Categoria;
-import com.cenfotec.lab1.repository.CategoriaRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 

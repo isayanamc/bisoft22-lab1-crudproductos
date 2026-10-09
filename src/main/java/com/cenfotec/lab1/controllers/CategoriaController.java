@@ -44,7 +44,8 @@ public class CategoriaController {
 
     @PreAuthorize("hasAuthority('categoria:leer')")
     @GetMapping("/{id}")
-    public ResponseEntity<CategoriaDTO> findBy(@PathVariable Long id) {
+    public ResponseEntity<CategoriaDTO> findById(@PathVariable Long id) {
+        log.info("Buscando categoría {}", id);
         return ResponseEntity.of(categoriaService.findById(id).map(categoriaMapper::toDto));
     }
 
@@ -61,7 +62,7 @@ public class CategoriaController {
 
     @PreAuthorize("hasAuthority('categoria:escribir')")
     @PutMapping("/{id}")
-    public ResponseEntity<CategoriaDTO> upate(@PathVariable Long id,
+    public ResponseEntity<CategoriaDTO> update(@PathVariable Long id,
             @Valid @RequestBody CategoriaDTO categoriaDTO) {
         return ResponseEntity.of(categoriaService.update(id, categoriaMapper.toEntity(categoriaDTO))
                 .map(categoriaMapper::toDto));

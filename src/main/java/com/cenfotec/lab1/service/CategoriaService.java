@@ -2,6 +2,7 @@ package com.cenfotec.lab1.service;
 
 import com.cenfotec.lab1.model.Categoria;
 import com.cenfotec.lab1.repository.CategoriaRepository;
+import com.cenfotec.lab1.repository.ProductoRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
+    private final ProductoRepository productoRepository;
 
     @Transactional(readOnly = true)
     public List<Categoria> findAll() {
@@ -59,6 +61,12 @@ public class CategoriaService {
     public boolean delete(Long id) {
         if (!categoriaRepository.existsById(id)) {
             return false;
+        }
+        // Una categoría con productos no se borra (409)
+        long productos = productoRepository.countByCategoriaId(id);
+        if (productos > 0) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "No se puede eliminar la categoría: tiene " + productos + "producto(s) asociado(s). Reasigne o elimine esos productos.");
         }
         categoriaRepository.deleteById(id);
         log.info("Categoría {} eliminada, id");

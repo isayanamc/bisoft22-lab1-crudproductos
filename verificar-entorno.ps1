@@ -125,6 +125,45 @@ function Probar-Roles-Categoria {
     Esperar 'La categoria borrada ya no existe' (Llamar-Api 'Get' "$url/$id" $adm).codigo 404
 }
 
+# Requisitos 4, 5, 9, 10 y la regla de negocio (409) con tokens reales.
+# Crea una categoria y un producto de prueba y borra los dos al final.
+function Probar-Productos {
+    $url = "$Api/api/v1/productos"
+    $adm = $tokens['admin']
+    $usr = $tokens['usuario']
+    $sufijo = Get-Date -Format 'yyyyMMddHHmmss'
+
+    Paso 'Productos y regla de negocio con tokens reales (requisitos 4, 5, 9 y 10)'
+    $lista = Llamar-Api 'Get' $url $usr
+    if ($lista.codigo -eq 404) { Info 'ProductoController aun no existe (paso 8); se omite esta parte.'; return }
+    Esperar 'USER lista productos' $lista.codigo 200
+
+    $cat = Llamar-Api 'Post' "$Api/api/v1/categorias" $adm @{ nombre = "Verificacion-Prod-$sufijo" }
+    if ($cat.codigo -ne 201) { Mal "No se pudo crear la categoria de prueba (respondio $($cat.codigo))"; return }
+    $catId = $cat.json.id
+
+    Esperar 'USER intenta crear producto' (Llamar-Api 'Post' $url $usr @{ nombre = 'x'; precio = 1; stock = 1; categoriaId = $catId }).codigo 403
+
+    $prod = Llamar-Api 'Post' $url $adm @{ nombre = "Verificacion-$sufijo"; descripcion = 'Creado por verificar-entorno.ps1'; precio = 1500.50; stock = 10; categoriaId = $catId }
+    Esperar 'SUPER-ADMIN crea producto' $prod.codigo 201
+    if ($prod.codigo -eq 201 -and $prod.json) {
+        $prodId = $prod.json.id
+        if ($prod.json.categoriaId -eq $catId) { Bien "El producto quedo asignado a su categoria ($($prod.json.categoriaNombre))" }
+        else { Mal 'El producto no quedo asignado a la categoria enviada' }
+
+        Esperar 'USER consulta el producto' (Llamar-Api 'Get' "$url/$prodId" $usr).codigo 200
+        Esperar 'USER intenta editar producto' (Llamar-Api 'Put' "$url/$prodId" $usr @{ nombre = 'x'; precio = 1; stock = 1; categoriaId = $catId }).codigo 403
+        Esperar 'USER intenta borrar producto' (Llamar-Api 'Delete' "$url/$prodId" $usr).codigo 403
+        Esperar 'SUPER-ADMIN edita producto' (Llamar-Api 'Put' "$url/$prodId" $adm @{ nombre = "Verificacion-$sufijo-editado"; precio = 2000; stock = 5; categoriaId = $catId }).codigo 200
+        Esperar 'Borrar categoria con productos se bloquea' (Llamar-Api 'Delete' "$Api/api/v1/categorias/$catId" $adm).codigo 409
+        Esperar 'SUPER-ADMIN borra producto' (Llamar-Api 'Delete' "$url/$prodId" $adm).codigo 204
+    }
+
+    Esperar 'Producto con categoria inexistente' (Llamar-Api 'Post' $url $adm @{ nombre = 'x'; precio = 1; stock = 1; categoriaId = 999999999 }).codigo 400
+    Esperar 'Producto con precio negativo' (Llamar-Api 'Post' $url $adm @{ nombre = 'x'; precio = -1; stock = 1; categoriaId = $catId }).codigo 400
+    Esperar 'Ya sin productos, la categoria se puede borrar' (Llamar-Api 'Delete' "$Api/api/v1/categorias/$catId" $adm).codigo 204
+}
+
 # ---------------------------------------------------------------------------
 Paso 'Docker y contenedores (pasos 3 y 4)'
 docker info *> $null
@@ -268,7 +307,7 @@ if ($salud -eq 0) {
             Bien 'Con token valido la API acepta la autenticacion (respondio 404)'
             Info '404 es normal mientras no exista CategoriaController (paso 7).'
         }
-        else { Probar-Roles-Categoria }
+        else { Probar-Roles-Categoria; Probar-Productos }
     }
 
     # CORS (requisito 2, clave para el Lab 2): Angular en :4200 si, cualquier otro origen no
