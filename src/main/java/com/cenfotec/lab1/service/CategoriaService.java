@@ -61,7 +61,7 @@ public class CategoriaService {
             return false;
         }
         categoriaRepository.deleteById(id);
-        log.info("Categoría {} eliminada, id");
+        log.info("Categoría {} eliminada", id);
         return true;
     }
 
