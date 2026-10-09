@@ -69,7 +69,7 @@ public class CategoriaService {
                     "No se puede eliminar la categoría: tiene " + productos + "producto(s) asociado(s). Reasigne o elimine esos productos.");
         }
         categoriaRepository.deleteById(id);
-        log.info("Categoría {} eliminada, id");
+        log.info("Categoría {} eliminada", id);
         return true;
     }
 
