@@ -37,7 +37,7 @@ public class SecurityConfig {
 
                 // 1) Reglas por URL (gruesas). El detalle fino va en anotaciones de los controllers.
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login", "/actuator/health", "/error").permitAll()
+                        .requestMatchers("/api/v1/auth/login", "/api/v1/auth/registro", "/actuator/health", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
 
