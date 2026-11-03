@@ -1,8 +1,456 @@
 {
   "info": {
-    "name": "Lab 1 CRUD Productos",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "_postman_id": "cf0072c5-b9a3-464d-948d-320450fd9740",
+    "name": "Lab1 CRUD Productos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58692742",
+    "_collection_link": "https://go.postman.co/collection/58692742-cf0072c5-b9a3-464d-948d-320450fd9740?source=collection_link"
   },
+  "item": [
+    {
+      "name": "Login admin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set(\"token\", pm.response.json().access_token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"admin\", \"password\": \"admin123\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Registrar categoria",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set(\"categoriaId\", pm.response.json().id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"Bebidas\", \"descripcion\": \"Frias y calientes\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/categorias",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "categorias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar categorias",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/categorias",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "categorias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar categoria",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"Bebidas\", \"descripcion\": \"Cafe y te\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/categorias/{{categoriaId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "categorias",
+            "{{categoriaId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Registrar producto",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set(\"productoId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"Cafe\", \"descripcion\": \"500 g\", \"precio\": 3500, \"stock\": 20, \"categoriaId\": {{categoriaId}}}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/productos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "productos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar productos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/productos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "productos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar producto",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"Cafe\", \"descripcion\": \"500 g\", \"precio\": 3200, \"stock\": 18, \"categoriaId\": {{categoriaId}}}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/productos/{{productoId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "productos",
+            "{{productoId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Borrar categoria con productos (409)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/categorias/{{categoriaId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "categorias",
+            "{{categoriaId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Borrar producto",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/productos/{{productoId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "productos",
+            "{{productoId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Borrar categoria",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/categorias/{{categoriaId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "categorias",
+            "{{categoriaId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Registrar usuario",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"prueba{{$timestamp}}\", \"email\": \"prueba{{$timestamp}}@correo.com\", \"firstName\": \"Prueba\", \"lastName\": \"Registro\", \"password\": \"clave1234\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/auth/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "registro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar usuarios (admin)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/usuarios",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login usuario (USER)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "   pm.collectionVariables.set(\"tokenUser\", pm.response.json().access_token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "   {\"username\": \"usuario\", \"password\": \"usuario123\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "USER: listar usuarios (403)",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/usuarios",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "USER: registrar categoría (403)",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenUser}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "   {\"nombre\": \"No permitida\", \"descripcion\": \"USER no puede escribir\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/categorias",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "categorias"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
   "auth": {
     "type": "bearer",
     "bearer": [
@@ -29,162 +477,10 @@
     {
       "key": "productoId",
       "value": ""
+    },
+    {
+      "key": "tokenUser",
+      "value": ""
     }
-  ],
-  "item": [
-    {
-      "name": "Login admin",
-      "request": {
-        "method": "POST",
-        "url": "{{baseUrl}}/api/v1/auth/login",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"username\": \"admin\", \"password\": \"admin123\"}"
-        },
-        "auth": {
-          "type": "noauth"
-        }
-      },
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.collectionVariables.set(\"token\", pm.response.json().access_token);"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "Registrar categoría",
-      "request": {
-        "method": "POST",
-        "url": "{{baseUrl}}/api/v1/categorias",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"nombre\": \"Bebidas\", \"descripcion\": \"Frias y calientes\"}"
-        }
-      },
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.collectionVariables.set(\"categoriaId\", pm.response.json().id);"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "Listar categorías",
-      "request": {
-        "method": "GET",
-        "url": "{{baseUrl}}/api/v1/categorias"
-      }
-    },
-    {
-      "name": "Actualizar categoría",
-      "request": {
-        "method": "PUT",
-        "url": "{{baseUrl}}/api/v1/categorias/{{categoriaId}}",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"nombre\": \"Bebidas\", \"descripcion\": \"Cafe y te\"}"
-        }
-      }
-    },
-    {
-      "name": "Registrar producto",
-      "request": {
-        "method": "POST",
-        "url": "{{baseUrl}}/api/v1/productos",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"nombre\": \"Cafe\", \"descripcion\": \"500 g\", \"precio\": 3500, \"stock\": 20, \"categoriaId\": {{categoriaId}}"
-        }
-      },
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.collectionVariables.set(\"productoId\", pm.response.json().id);"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "Listar productos",
-      "request": {
-        "method": "GET",
-        "url": "{{baseUrl}}/api/v1/productos"
-      }
-    },
-    {
-      "name": "Actualizar producto",
-      "request": {
-        "method": "PUT",
-        "url": "{{baseUrl}}/api/v1/productos/{{productoId}}",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"nombre\": \"Cafe\", \"descripcion\": \"500 g\", \"precio\": 3200, \"stock\": 18, \"categoriaId\": {{categoriaId}}}"
-        }
-      }
-    },
-    {
-      "name": "Borrar categoria con productos (409)",
-      "request": {
-        "method": "DELETE",
-        "url": "{{baseUrl}}/api/v1/categorias/{{categoriaId}}"
-      }
-    },
-    {
-      "name": "Borrar producto",
-    "request": {
-      "method": "DELETE",
-      "url": "{{baseUrl}}/api/v1/productos/{{productoId}}"
-    }
-    },
-    {
-      "name": "Borrar categoria",
-      "request": {
-        "method": "DELETE",
-        "url": "{{baseUrl}}/api/v1/categorias/{{categoriaId}}"
-      }
-    }
-
   ]
 }

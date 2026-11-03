@@ -66,7 +66,7 @@ public class CategoriaService {
         long productos = productoRepository.countByCategoriaId(id);
         if (productos > 0) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "No se puede eliminar la categoría: tiene " + productos + "producto(s) asociado(s). Reasigne o elimine esos productos.");
+                    "No se puede eliminar la categoría: tiene " + productos + " producto(s) asociado(s). Reasigne o elimine esos productos.");
         }
         categoriaRepository.deleteById(id);
         log.info("Categoría {} eliminada", id);
