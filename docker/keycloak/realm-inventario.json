@@ -7,13 +7,13 @@
     "realm": [
       {
         "name": "SUPER-ADMIN-ROLE",
-        "description": "Puede consultar, crear, editar y borrar productos y categorías",
+        "description": "Puede consultar, crear, editar, borrar productos y categorías y ver los usuarios",
         "composite": true,
         "composites": {
           "client": {
             "inventario-api": [
               "producto:leer", "producto:escribir", "producto:eliminar",
-              "categoria:leer", "categoria:escribir", "categoria:eliminar"
+              "categoria:leer", "categoria:escribir", "categoria:eliminar", "usuario:leer"
             ]
           }
         }
@@ -36,7 +36,8 @@
         { "name": "producto:eliminar", "description": "Eliminar productos" },
         { "name": "categoria:leer", "description": "Consultar categorías" },
         { "name": "categoria:escribir", "description": "Crear y actualizar categorías" },
-        { "name": "categoria:eliminar", "description": "Eliminar categorías" }
+        { "name": "categoria:eliminar", "description": "Eliminar categorías" },
+        { "name": "usuario:leer", "description": "Ver los usuarios registrados" }
       ]
     }
   },
@@ -51,6 +52,19 @@
       "redirectUris": ["http://localhost:*", "https://oauth.pstmn.io/v1/callback"],
       "webOrigins": ["+"],
       "fullScopeAllowed": true
+    },
+    {
+      "clientId": "inventario-admin",
+      "name": "API de Inventario - administración de usuarios",
+      "description": "Cliente confidencial que usa la API (no el navegador) para registrar y listar usuarios",
+      "enabled": true,
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "inventario-admin-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false
     }
   ],
   "users": [
@@ -73,6 +87,16 @@
       "lastName": "Consulta",
       "credentials": [{ "type": "password", "value": "usuario123", "temporary": false }],
       "realmRoles": ["USER"]
+    },
+    {
+      "username": "service-account-inventario-admin",
+      "enabled": true,
+      "serviceAccountClientId": "inventario-admin",
+      "clientRoles": {
+        "realm-management": ["view-users", "query-users", "manage-users", "view-realm"]
+      }
     }
+
+
   ]
 }

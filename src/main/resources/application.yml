@@ -25,6 +25,13 @@ keycloak:
   # Endpoint de Keycloak que emite tokens (lo usa POST /api/v1/auth/login)
   token-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
 
+  # Cliente confidencial que usa la API para registrar y listar usuarios (API admin de Keycloak).
+  # El secreto es solo de desarrollo local, se puede sobreescribir con KEYCLOAK_ADMIN_CLIENT_SECRET.
+  admin:
+    base-url: http://localhost:8180/admin/realms/inventario
+    client-id: inventario-admin
+    client-secret: ${KEYCLOAK_ADMIN_CLIENT_SECRET:inventario-admin-secret}
+
 #Frontend que pueden llamar a la API desde el navegador (CORS)
 app:
   cors:
